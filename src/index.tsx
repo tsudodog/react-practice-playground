@@ -1,24 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import Root from './routes/root'
+import { Provider } from 'react-redux';
 import {
   createBrowserRouter,
   RouterProvider,
-} from "react-router-dom"
-import reportWebVitals from './reportWebVitals';
-import { Provider } from 'react-redux';
-import store from './redux'
+} from "react-router-dom";
 import ErrorPage from './error-page';
-import Contact from './routes/contact'
+import './index.css';
+import store from './redux';
+import reportWebVitals from './reportWebVitals';
+import Contact from './routes/contact';
 import MyTestPage from './routes/MyTestPage';
+import Root, { loader as rootLoader } from './routes/root';
+
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root/>,
-    errorElement: <ErrorPage/>,
+    element: <Root />,
+    errorElement: <ErrorPage />,
+    loader: rootLoader,
+    children: [{
+      path: "contacts/:contactId",
+      element: <Contact />
+    }
+    ]
   },
   {
     path: "contacts/:contactId",
@@ -26,7 +32,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/my-test-page",
-    element: <MyTestPage/>
+    element: <MyTestPage />
   }
 ]);
 
@@ -36,7 +42,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
 );
